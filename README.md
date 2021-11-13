@@ -1,7 +1,9 @@
 # Infrastructure for UConnect
 
 ## Deployment steps
+ * (if you have multiple AWS accounts in ~/.aws/config) `export AWS_PROFILE=<profile-name-for-uconnect>`
  * `npm run build`
+ * `cdk bootstrap`
  * `cdk synth`
  * `cdk deploy`
 
