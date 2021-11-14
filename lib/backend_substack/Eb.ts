@@ -50,6 +50,47 @@ export class Eb {
               optionName: 'InstanceTypes',
               value: 't2.micro',
           },
+          {
+              namespace: 'aws:elasticbeanstalk:environment',
+              optionName: 'EnvironmentType',
+              value: 'LoadBalanced',
+          },
+          {
+              namespace: 'aws:elasticbeanstalk:environment',
+              optionName: 'LoadBalancerType',
+              value: 'classic',
+          },
+          {
+              namespace: 'aws:elb:listener:80',
+              optionName: 'ListenerEnabled',
+              value: 'false',
+          },
+          {
+              namespace: 'aws:elb:listener:443',
+              optionName: 'ListenerEnabled',
+              value: 'true',
+          },
+          {
+              namespace: 'aws:elb:listener:443',
+              optionName: 'ListenerProtocol',
+              value: 'HTTPS',
+          },
+          {
+              namespace: 'aws:elb:listener:443',
+              optionName: 'InstancePort',
+              value: '80',
+          },
+          {
+              namespace: 'aws:elb:listener:443',
+              optionName: 'InstanceProtocol',
+              value: 'HTTP',
+          },
+          {
+              namespace: 'aws:elb:listener:443',
+              optionName: 'SSLCertificateId',
+              // self-signed placeholder for now
+              value: 'arn:aws:acm:us-east-1:054005165999:certificate/9853d21b-80e8-484e-a97c-074116096b66',
+          }
         ];
     
         // Create an Elastic Beanstalk environment for pre prod
