@@ -61,6 +61,16 @@ export class Eb {
               value: 'classic',
           },
           {
+              namespace: 'aws:elasticbeanstalk:cloudwatch:logs',
+              optionName: 'StreamLogs',
+              value: 'true'
+          },
+          {
+              namespace: 'aws:elasticbeanstalk:cloudwatch:logs',
+              optionName: 'RetentionInDays',
+              value: '30'
+          },
+          {
               namespace: 'aws:elb:listener:80',
               optionName: 'ListenerEnabled',
               value: 'false',
@@ -100,5 +110,7 @@ export class Eb {
           solutionStackName: "64bit Amazon Linux 2 v3.2.7 running Corretto 8",
           optionSettings: optionSettingProperties,
         });
+
+        preProdEnv.addDependsOn(app);
       }
 }
