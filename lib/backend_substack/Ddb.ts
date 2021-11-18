@@ -8,7 +8,7 @@ export class Ddb {
             billingMode: BillingMode.PROVISIONED,
             readCapacity: 20,
             writeCapacity: 20,
-            removalPolicy: RemovalPolicy.SNAPSHOT,
+            removalPolicy: RemovalPolicy.RETAIN,
             partitionKey: {name: 'id', type: AttributeType.STRING},
             tableName: 'userInfo'
         });

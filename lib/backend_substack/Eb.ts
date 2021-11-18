@@ -1,4 +1,5 @@
 import * as cdk from '@aws-cdk/core';
+import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
 import elasticbeanstalk = require('@aws-cdk/aws-elasticbeanstalk');
 import iam = require('@aws-cdk/aws-iam');
 
@@ -9,7 +10,7 @@ export class Eb {
         });
     
         // Create role and instance profile
-        const ebRole = new iam.Role(substack, `${appName}-aws-elasticbeanstalk-ec2-role`, {
+        const ebRole = new iam.Role(substack, `${appName}-prod-elasticbeanstalk-ec2-role`, {
           assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
         });
     
@@ -20,7 +21,7 @@ export class Eb {
         ebRole.addManagedPolicy(s3Policy);
         ebRole.addManagedPolicy(ddbPolicy);
     
-        const ebProfileName = `${appName}-InstanceProfile`
+        const ebProfileName = `${appName}-InstanceProfile-prod`
     
         const instanceProfile = new iam.CfnInstanceProfile(substack, ebProfileName, {
           instanceProfileName: ebProfileName,
@@ -28,8 +29,14 @@ export class Eb {
               ebRole.roleName
           ]
         });
+
+        const jwtSecretProd = secretsmanager.Secret.fromSecretNameV2(substack, `${appName}-JWT-secret-prod`, 
+        'jwt-prod');
     
         const optionSettingProperties: elasticbeanstalk.CfnEnvironment.OptionSettingProperty[] = [
+          // ----------------
+          // --auto scaling--
+          // ----------------
           {
               namespace: 'aws:autoscaling:launchconfiguration',
               optionName: 'IamInstanceProfile',
@@ -45,6 +52,10 @@ export class Eb {
               optionName: 'MaxSize',
               value: '1',
           },
+
+          // -----------------------
+          // --instance attributes--
+          // -----------------------
           {
               namespace: 'aws:ec2:instances',
               optionName: 'InstanceTypes',
@@ -70,6 +81,10 @@ export class Eb {
               optionName: 'RetentionInDays',
               value: '30'
           },
+
+          // -----------------------
+          // --HTTPS elb listeners--
+          // -----------------------
           {
               namespace: 'aws:elb:listener:80',
               optionName: 'ListenerEnabled',
@@ -100,15 +115,29 @@ export class Eb {
               optionName: 'SSLCertificateId',
               // self-signed placeholder for now
               value: 'arn:aws:acm:us-east-1:054005165999:certificate/9853d21b-80e8-484e-a97c-074116096b66',
+          },
+
+          // -------------------------
+          // --environment variables--
+          // -------------------------
+          {
+              namespace: 'aws:elasticbeanstalk:application:environment',
+              optionName: 'SPRING_PROFILES_ACTIVE',
+              value: 'prod'
+          },
+          {
+              namespace: 'aws:elasticbeanstalk:application:environment',
+              optionName: 'JWT_SECRET',
+              value: jwtSecretProd.secretValue.toString()
           }
         ];
     
-        // Create an Elastic Beanstalk environment for pre prod
-        const preProdEnv = new elasticbeanstalk.CfnEnvironment(substack, 'PreProdEnvironment', {
-          environmentName: appName + '-pre-prod',
+        // Create an Elastic Beanstalk environment for production
+        const preProdEnv = new elasticbeanstalk.CfnEnvironment(substack, 'ProdEnvironment', {
+          environmentName: appName + '-prod',
           applicationName: app.applicationName || appName,
           solutionStackName: "64bit Amazon Linux 2 v3.2.7 running Corretto 8",
-          optionSettings: optionSettingProperties,
+          optionSettings: optionSettingProperties
         });
 
         preProdEnv.addDependsOn(app);
