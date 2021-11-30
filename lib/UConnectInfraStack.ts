@@ -1,5 +1,4 @@
 import * as cdk from '@aws-cdk/core';
-import s3assets = require('@aws-cdk/aws-s3-assets');
 import { BackendSubstack } from './backend_substack/BackendSubstack';
 import { FrontendSubstack } from './frontend_substack/FrontendSubstack';
 
@@ -14,6 +13,6 @@ export class UConnectInfraStack extends cdk.Stack {
     const frontendId = 'UConnectFrontend';
 
     this.backend = new BackendSubstack(this, backendId);
-    this.frontend = new FrontendSubstack(this, frontendId );
+    this.frontend = new FrontendSubstack(this, frontendId);
   }
 }
