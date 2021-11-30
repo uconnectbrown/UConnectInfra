@@ -3,7 +3,7 @@ import * as cloudfront from "@aws-cdk/aws-cloudfront";
 import * as cdk from "@aws-cdk/core";
 import * as route53 from "@aws-cdk/aws-route53";
 import * as s3 from "@aws-cdk/aws-s3";
-import {StaticSiteProps} from "./FrontendSubstack";
+import {StaticSiteProps} from "./UConnectFrontendInfraStack";
 
 export interface CloudFrontProps {
     staticSiteProps: StaticSiteProps,

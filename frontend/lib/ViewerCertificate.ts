@@ -2,7 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as cloudwatch from "@aws-cdk/aws-cloudwatch";
-import {StaticSiteProps} from './FrontendSubstack';
+import {StaticSiteProps} from "./UConnectFrontendInfraStack";
 
 export class ViewerCertificate {
     public certificate: cloudfront.ViewerCertificate;

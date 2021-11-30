@@ -2,7 +2,7 @@
   "name": "u_connect_infra",
   "version": "0.1.0",
   "bin": {
-    "u_connect_infra": "bin/UConnectInfra.js"
+    "u_connect_backend_infra": "bin/UConnectBackendInfra.js"
   },
   "scripts": {
     "build": "tsc",

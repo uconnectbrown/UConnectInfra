@@ -3,7 +3,7 @@ import * as route53 from '@aws-cdk/aws-route53';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as iam from '@aws-cdk/aws-iam';
-import {StaticSiteProps} from './FrontendSubstack';
+import {StaticSiteProps} from "./UConnectFrontendInfraStack";
 
 /**
  * S3 bucket that contains the frontend static content
@@ -20,7 +20,7 @@ export class Bucket {
             comment: `OAI for ${stackName}`
         });
 
-        new cdk.CfnOutput(substack, 'Site', {value: 'https://' + siteDomain});
+        new cdk.CfnOutput(substack, `${stackName}SiteURL`, {value: 'https://' + siteDomain});
 
         // Content bucket
         this.siteBucket = new s3.Bucket(substack, `${stackName}-bucket`, {

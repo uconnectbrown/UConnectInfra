@@ -10,7 +10,7 @@ export class Ddb {
             writeCapacity: 20,
             removalPolicy: RemovalPolicy.RETAIN,
             partitionKey: {name: 'id', type: AttributeType.STRING},
-            tableName: 'userInfo'
+            tableName: 'prod-userInfo'
         });
 
         userTable.addGlobalSecondaryIndex({
