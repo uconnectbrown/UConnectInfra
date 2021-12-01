@@ -2,6 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import {Bucket} from "./Bucket";
 import {ViewerCertificate} from "./ViewerCertificate";
 import {CloudFront} from "./CloudFront";
+import {CloudFrontProps} from "./CloudFront";
 
 export interface StaticSiteProps {
   domainName: string;
@@ -21,7 +22,7 @@ export class UConnectFrontendInfraStack extends cdk.Stack {
 
     const bucket = new Bucket(this, frontendId, staticSiteProps);
     const viewerCertificate = new ViewerCertificate(this, frontendId, staticSiteProps);
-    const cloudFront = new CloudFront(this, frontendId, {
+    const cloudFront = new CloudFront(this, frontendId, <CloudFrontProps>{
       staticSiteProps: staticSiteProps,
       viewerCertificate: viewerCertificate.certificate,
       siteBucket: bucket.siteBucket,
