@@ -19,23 +19,18 @@ export class ViewerCertificate {
         // }).certificateArn;
 
         // TODO: manually create/upload cert to cert manager
-        const certificateArn = '';
+        const certificateArn = 'arn:aws:acm:us-east-1:054005165999:certificate/76f37e34-cff6-4056-afe4-b92730b492d4';
         new cdk.CfnOutput(substack, `${stackName}ViewerCertificateArn`, {value: certificateArn});
 
         // Enforce HTTPS & TLS v1.1 to request objects
         this.certificate = cloudfront.ViewerCertificate.fromAcmCertificate(<acm.ICertificate>{
                 certificateArn: certificateArn,
                 env: {
-                    region: cdk.Aws.REGION,
-                    account: cdk.Aws.ACCOUNT_ID
+                    region: 'us-east-1',
+                    account: '054005165999'
                 },
                 node: substack.node,
                 stack: substack,
-                metricDaysToExpiry: () =>
-                    new cloudwatch.Metric({
-                        namespace: "TLS Viewer Certificate Validity",
-                        metricName: "TLS Viewer Certificate Expired",
-                    }),
             },
             {
                 sslMethod: cloudfront.SSLMethod.SNI,

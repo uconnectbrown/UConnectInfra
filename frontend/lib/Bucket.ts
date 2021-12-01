@@ -9,7 +9,7 @@ import {StaticSiteProps} from "./UConnectFrontendInfraStack";
  * S3 bucket that contains the frontend static content
  */
 export class Bucket {
-    public siteBucket: s3.Bucket;
+    public siteBucket: s3.IBucket;
     public cloudfrontOAI: cloudfront.OriginAccessIdentity;
 
     constructor(substack: cdk.Construct, stackName: string, props: StaticSiteProps) {
