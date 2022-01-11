@@ -14,13 +14,24 @@ export class Ddb {
             tableName: 'prod-userInfo'
         });
 
+        // the following GSI information must match up with User.java in UConnectBackend repo
         userTable.addGlobalSecondaryIndex({
             indexName: 'emailIndex',
             partitionKey: {name: 'email', type: AttributeType.STRING},
             projectionType: ProjectionType.ALL
         });
 
-        // TODO: add other GSIs after looking through firebase before migration
+        userTable.addGlobalSecondaryIndex({
+            indexName: 'firstName',
+            partitionKey: {name: 'firstName', type: AttributeType.STRING},
+            projectionType: ProjectionType.ALL
+        });
+
+        // userTable.addGlobalSecondaryIndex({
+        //     indexName: 'lastName',
+        //     partitionKey: {name: 'lastName', type: AttributeType.STRING},
+        //     projectionType: ProjectionType.ALL
+        // });
 
         // concentration table
         const concentrationTable = new Table(substack, 'prod-concentration-table', {
