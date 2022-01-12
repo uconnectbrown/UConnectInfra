@@ -27,11 +27,11 @@ export class Ddb {
             projectionType: ProjectionType.ALL
         });
 
-        // userTable.addGlobalSecondaryIndex({
-        //     indexName: 'lastName',
-        //     partitionKey: {name: 'lastName', type: AttributeType.STRING},
-        //     projectionType: ProjectionType.ALL
-        // });
+        userTable.addGlobalSecondaryIndex({
+            indexName: 'lastName',
+            partitionKey: {name: 'lastName', type: AttributeType.STRING},
+            projectionType: ProjectionType.ALL
+        });
 
         // concentration table
         const concentrationTable = new Table(substack, 'prod-concentration-table', {
