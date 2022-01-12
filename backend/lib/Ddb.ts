@@ -33,6 +33,12 @@ export class Ddb {
             projectionType: ProjectionType.ALL
         });
 
+        userTable.addGlobalSecondaryIndex({
+            indexName: 'classYear',
+            partitionKey: {name: 'classYear', type: AttributeType.STRING},
+            projectionType: ProjectionType.ALL
+        });
+
         // concentration table
         const concentrationTable = new Table(substack, 'prod-concentration-table', {
             billingMode: BillingMode.PAY_PER_REQUEST,
