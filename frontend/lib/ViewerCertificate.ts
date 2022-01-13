@@ -18,8 +18,8 @@ export class ViewerCertificate {
         //     region: 'us-east-1', // Cloudfront only checks this region for certificates.
         // }).certificateArn;
 
-        // TODO: manually create/upload cert to cert manager
-        const certificateArn = 'arn:aws:acm:us-east-1:054005165999:certificate/76f37e34-cff6-4056-afe4-b92730b492d4';
+        // *.uconnectbrown.com
+        const certificateArn = 'arn:aws:acm:us-east-1:054005165999:certificate/e79514cd-3dd8-42b0-a093-fc2650b539cd';
         new cdk.CfnOutput(substack, `${stackName}ViewerCertificateArn`, {value: certificateArn});
 
         // Enforce HTTPS & TLS v1.1 to request objects
