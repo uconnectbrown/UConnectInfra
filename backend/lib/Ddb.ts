@@ -17,7 +17,7 @@ export class Ddb {
         // the following GSI information must match up with User.java in UConnectBackend repo
         userTable.addGlobalSecondaryIndex({
             indexName: 'emailIndex',
-            partitionKey: {name: 'email', type: AttributeType.STRING},
+            partitionKey: {name: 'username', type: AttributeType.STRING},
             projectionType: ProjectionType.ALL
         });
 
