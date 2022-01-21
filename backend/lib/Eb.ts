@@ -14,12 +14,14 @@ export class Eb {
             assumedBy: new iam.ServicePrincipal('ec2.amazonaws.com'),
         });
 
-        const ebWebPolicy = iam.ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkWebTier')
-        const s3Policy = iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess')
-        const ddbPolicy = iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonDynamoDBFullAccess')
+        const ebWebPolicy = iam.ManagedPolicy.fromAwsManagedPolicyName('AWSElasticBeanstalkWebTier');
+        const s3Policy = iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3FullAccess');
+        const ddbPolicy = iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonDynamoDBFullAccess');
+        const sesPolicy = iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSESFullAccess');
         ebRole.addManagedPolicy(ebWebPolicy);
         ebRole.addManagedPolicy(s3Policy);
         ebRole.addManagedPolicy(ddbPolicy);
+        ebRole.addManagedPolicy(sesPolicy);
 
         const ebProfileName = `${appName}-InstanceProfile-prod`
 
