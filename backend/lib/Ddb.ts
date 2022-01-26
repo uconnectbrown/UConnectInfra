@@ -7,8 +7,8 @@ export class Ddb {
         // user info table
         const userTable = new Table(substack, 'prod-user-table', {
             billingMode: BillingMode.PROVISIONED,
-            readCapacity: 20,
-            writeCapacity: 20,
+            readCapacity: 5,
+            writeCapacity: 5,
             removalPolicy: RemovalPolicy.RETAIN,
             partitionKey: {name: 'id', type: AttributeType.STRING},
             tableName: 'prod-userInfo'
