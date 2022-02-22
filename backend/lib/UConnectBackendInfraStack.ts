@@ -1,6 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import {Eb} from "./Eb";
-import {Ddb} from "./Ddb";
+import {Ddb} from "./ddb/Ddb";
 import {Bucket} from "./Bucket";
 
 export class UConnectBackendInfraStack extends cdk.Stack {

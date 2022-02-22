@@ -1,8 +1,8 @@
-import {AttributeType, BillingMode, ProjectionType, Table} from '@aws-cdk/aws-dynamodb';
-import * as cdk from '@aws-cdk/core';
-import {RemovalPolicy} from '@aws-cdk/core';
+import {AttributeType, BillingMode, ProjectionType, Table} from "@aws-cdk/aws-dynamodb";
+import * as cdk from "@aws-cdk/core";
+import {RemovalPolicy} from "@aws-cdk/core";
 
-export class Ddb {
+export class UserTables {
     constructor(substack: cdk.Construct, appName: string) {
         // user info table
         const userTable = new Table(substack, 'prod-user-table', {
