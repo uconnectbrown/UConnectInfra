@@ -50,12 +50,12 @@ export class EventBoardTables {
             projectionType: ProjectionType.ALL
         });
 
-        publishedCommentTable.addGlobalSecondaryIndex({
-            indexName: 'parentIndex',
-            partitionKey: {name: 'parent', type: AttributeType.NUMBER},
-            sortKey: {name: 'timestamp', type: AttributeType.STRING},
-            projectionType: ProjectionType.ALL
-        });
+        // publishedCommentTable.addGlobalSecondaryIndex({
+        //     indexName: 'parentIndex',
+        //     partitionKey: {name: 'parent', type: AttributeType.NUMBER},
+        //     sortKey: {name: 'timestamp', type: AttributeType.STRING},
+        //     projectionType: ProjectionType.ALL
+        // });
     }
 
     private static addEventTableGSIs(table: Table): void {
