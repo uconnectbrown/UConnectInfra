@@ -10,7 +10,7 @@ export class EventBoardTables {
             removalPolicy: RemovalPolicy.RETAIN,
             partitionKey: {name: 'id', type: AttributeType.STRING},
             sortKey: {name: 'timestamp', type: AttributeType.STRING},
-            tableName: 'prod-eventBoardEvent-hidden'
+            tableName: 'prod-eventBoardEventHidden'
         });
         EventBoardTables.addEventTableGSIs(hiddenEventTable);
 
@@ -20,7 +20,7 @@ export class EventBoardTables {
             removalPolicy: RemovalPolicy.RETAIN,
             partitionKey: {name: 'id', type: AttributeType.STRING},
             sortKey: {name: 'timestamp', type: AttributeType.STRING},
-            tableName: 'prod-eventBoardComment-hidden'
+            tableName: 'prod-eventBoardCommentHidden'
         });
         EventBoardTables.addCommentTableGSIs(hiddenCommentTable);
 
@@ -30,7 +30,7 @@ export class EventBoardTables {
             removalPolicy: RemovalPolicy.RETAIN,
             partitionKey: {name: 'id', type: AttributeType.STRING},
             sortKey: {name: 'timestamp', type: AttributeType.STRING},
-            tableName: 'prod-eventBoardEvent-published'
+            tableName: 'prod-eventBoardEventPublished'
         });
         EventBoardTables.addEventTableGSIs(publishedEventTable);
 
@@ -40,22 +40,9 @@ export class EventBoardTables {
             removalPolicy: RemovalPolicy.RETAIN,
             partitionKey: {name: 'id', type: AttributeType.STRING},
             sortKey: {name: 'timestamp', type: AttributeType.STRING},
-            tableName: 'prod-eventBoardComment-published'
+            tableName: 'prod-eventBoardCommentPublished'
         });
-        // EventBoardTables.addCommentTableGSIs(publishedCommentTable);
-        publishedCommentTable.addGlobalSecondaryIndex({
-            indexName: 'authorIndex',
-            partitionKey: {name: 'author', type: AttributeType.STRING},
-            sortKey: {name: 'timestamp', type: AttributeType.STRING},
-            projectionType: ProjectionType.ALL
-        });
-
-        // publishedCommentTable.addGlobalSecondaryIndex({
-        //     indexName: 'parentIndex',
-        //     partitionKey: {name: 'parent', type: AttributeType.NUMBER},
-        //     sortKey: {name: 'timestamp', type: AttributeType.STRING},
-        //     projectionType: ProjectionType.ALL
-        // });
+        EventBoardTables.addCommentTableGSIs(publishedCommentTable);
     }
 
     private static addEventTableGSIs(table: Table): void {
