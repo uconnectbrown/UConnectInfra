@@ -96,11 +96,11 @@ export class EventBoardTables {
             projectionType: ProjectionType.ALL
         });
 
-        // table.addGlobalSecondaryIndex({
-        //     indexName: 'parentIdIndex',
-        //     partitionKey: {name: 'parentId', type: AttributeType.NUMBER},
-        //     sortKey: {name: 'timestamp', type: AttributeType.STRING},
-        //     projectionType: ProjectionType.ALL
-        // });
+        table.addGlobalSecondaryIndex({
+            indexName: 'parentIdIndex',
+            partitionKey: {name: 'parentId', type: AttributeType.NUMBER},
+            sortKey: {name: 'timestamp', type: AttributeType.STRING},
+            projectionType: ProjectionType.ALL
+        });
     }
 }
