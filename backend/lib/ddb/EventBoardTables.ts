@@ -42,7 +42,20 @@ export class EventBoardTables {
             sortKey: {name: 'timestamp', type: AttributeType.STRING},
             tableName: 'prod-eventBoardComment-published'
         });
-        EventBoardTables.addCommentTableGSIs(publishedCommentTable);
+        // EventBoardTables.addCommentTableGSIs(publishedCommentTable);
+        publishedCommentTable.addGlobalSecondaryIndex({
+            indexName: 'authorIndex',
+            partitionKey: {name: 'author', type: AttributeType.STRING},
+            sortKey: {name: 'timestamp', type: AttributeType.STRING},
+            projectionType: ProjectionType.ALL
+        });
+
+        publishedCommentTable.addGlobalSecondaryIndex({
+            indexName: 'parentIndex',
+            partitionKey: {name: 'parent', type: AttributeType.NUMBER},
+            sortKey: {name: 'timestamp', type: AttributeType.STRING},
+            projectionType: ProjectionType.ALL
+        });
     }
 
     private static addEventTableGSIs(table: Table): void {
@@ -83,11 +96,11 @@ export class EventBoardTables {
             projectionType: ProjectionType.ALL
         });
 
-        table.addGlobalSecondaryIndex({
-            indexName: 'parentIndex',
-            partitionKey: {name: 'parent', type: AttributeType.NUMBER},
-            sortKey: {name: 'timestamp', type: AttributeType.STRING},
-            projectionType: ProjectionType.ALL
-        });
+        // table.addGlobalSecondaryIndex({
+        //     indexName: 'parentIdIndex',
+        //     partitionKey: {name: 'parentId', type: AttributeType.NUMBER},
+        //     sortKey: {name: 'timestamp', type: AttributeType.STRING},
+        //     projectionType: ProjectionType.ALL
+        // });
     }
 }
