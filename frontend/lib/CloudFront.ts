@@ -12,7 +12,7 @@ export interface CloudFrontProps {
     cloudfrontOAI: cloudfront.OriginAccessIdentity
 }
 
-export class CloudFront{
+export class CloudFront {
     constructor(substack: Construct, stackName: string, props: CloudFrontProps) {
         const distribution = new cloudfront.CloudFrontWebDistribution(substack, `${stackName}CloudFront`, {
             viewerCertificate: props.viewerCertificate,
@@ -28,6 +28,14 @@ export class CloudFront{
                         allowedMethods: cloudfront.CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
                     }],
                 }
+            ],
+            errorConfigurations: [
+                {
+                    errorCode: 403,
+                    errorCachingMinTtl: 86400,
+                    responsePagePath: "/index.html",
+                    responseCode: 200
+                }
             ]
         });
         new cdk.CfnOutput(substack, `${stackName}DistributionId`, {value: distribution.distributionId});
@@ -36,7 +44,7 @@ export class CloudFront{
         // TODO: uncomment and fix after transferring from godaddy
         // TODO: before transferring, manually create record
         // new route53.ARecord(substack, `${stackName}SiteAliasRecord`, {
-        //     recordName: siteDomain,
+        //     recordName: props.staticSiteProps.siteDomain,
         //     target: route53.RecordTarget.fromAlias(new targets.CloudFrontTarget(distribution)),
         //     zone
         // });

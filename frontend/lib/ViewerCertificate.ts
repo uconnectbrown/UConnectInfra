@@ -1,7 +1,6 @@
 import * as cdk from '@aws-cdk/core';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as cloudwatch from "@aws-cdk/aws-cloudwatch";
 import {StaticSiteProps} from "./UConnectFrontendInfraStack";
 
 export class ViewerCertificate {
@@ -18,8 +17,8 @@ export class ViewerCertificate {
         //     region: 'us-east-1', // Cloudfront only checks this region for certificates.
         // }).certificateArn;
 
-        // *.uconnectbrown.com
-        const certificateArn = 'arn:aws:acm:us-east-1:054005165999:certificate/e79514cd-3dd8-42b0-a093-fc2650b539cd';
+        // uconnectbrown.com + www.uconnectbrown.com
+        const certificateArn = 'arn:aws:acm:us-east-1:054005165999:certificate/a9ba0298-c49f-45cf-bde3-d7ae2161d587';
         new cdk.CfnOutput(substack, `${stackName}ViewerCertificateArn`, {value: certificateArn});
 
         // Enforce HTTPS & TLS v1.1 to request objects

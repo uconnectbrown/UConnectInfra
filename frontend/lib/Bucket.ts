@@ -1,5 +1,4 @@
 import * as cdk from '@aws-cdk/core';
-import * as route53 from '@aws-cdk/aws-route53';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as iam from '@aws-cdk/aws-iam';
@@ -26,7 +25,9 @@ export class Bucket {
         this.siteBucket = new s3.Bucket(substack, `${stackName}-bucket`, {
             bucketName: siteDomain,
             websiteIndexDocument: 'index.html',
-            websiteErrorDocument: 'error.html',
+            // use react router to handle errors
+            // TODO: fix later for SEO (https://hackernoon.com/hosting-static-react-websites-on-aws-s3-cloudfront-with-ssl-924e5c134455)
+            websiteErrorDocument: 'index.html',
             publicReadAccess: false,
             blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
 
