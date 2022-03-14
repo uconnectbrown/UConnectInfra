@@ -10,16 +10,15 @@ export class ViewerCertificate {
         const siteDomain = props.siteSubDomain == '' ? props.domainName : `${props.siteSubDomain}.${props.domainName}`;
 
         // TLS certificate
-        // TODO: Uncomment after transferring from godaddy to route53
-        // const certificateArn = new acm.DnsValidatedCertificate(substack, 'SiteCertificate', {
-        //     domainName: siteDomain,
-        //     hostedZone: zone,
-        //     region: 'us-east-1', // Cloudfront only checks this region for certificates.
-        // }).certificateArn;
+        const certificateArn = new acm.DnsValidatedCertificate(substack, `${siteDomain}Certificate`, {
+            domainName: siteDomain,
+            hostedZone: props.hostedZone,
+            region: 'us-east-1', // Cloudfront only checks this region for certificates.
+        }).certificateArn;
 
-        // uconnectbrown.com + www.uconnectbrown.com
-        const certificateArn = 'arn:aws:acm:us-east-1:054005165999:certificate/a9ba0298-c49f-45cf-bde3-d7ae2161d587';
-        new cdk.CfnOutput(substack, `${stackName}ViewerCertificateArn`, {value: certificateArn});
+        // old manually created certificate before switching from godaddy (uconnectbrown.com + www.uconnectbrown.com)
+        // const certificateArn = 'arn:aws:acm:us-east-1:054005165999:certificate/a9ba0298-c49f-45cf-bde3-d7ae2161d587';
+        new cdk.CfnOutput(substack, `${siteDomain}ViewerCertificateArn`, {value: certificateArn});
 
         // Enforce HTTPS & TLS v1.1 to request objects
         this.certificate = cloudfront.ViewerCertificate.fromAcmCertificate(<acm.ICertificate>{

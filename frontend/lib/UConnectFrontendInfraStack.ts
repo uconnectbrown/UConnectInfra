@@ -1,11 +1,16 @@
 import * as cdk from '@aws-cdk/core';
-import {Bucket} from "./Bucket";
+import {StaticSiteBucket} from "./StaticSiteBucket";
 import {ViewerCertificate} from "./ViewerCertificate";
-import {CloudFront, CloudFrontProps} from "./CloudFront";
+import {ApexCloudFront, CloudFrontProps} from "./ApexCloudFront";
+import * as route53 from "@aws-cdk/aws-route53";
+import {IHostedZone} from "@aws-cdk/aws-route53";
+import {RedirectBucket} from "./RedirectBucket";
+import {RedirectCloudFront} from "./RedirectCloudFront";
 
 export interface StaticSiteProps {
-    domainName: string;
-    siteSubDomain: string;
+    domainName: string,
+    siteSubDomain: string,
+    hostedZone: IHostedZone,
 }
 
 export class UConnectFrontendInfraStack extends cdk.Stack {
@@ -14,18 +19,37 @@ export class UConnectFrontendInfraStack extends cdk.Stack {
 
         const frontendId = 'UConnectFrontend';
 
-        // TODO: fill out
         const domainName = 'uconnectbrown.com';
-        const siteSubDomain = '';
-        const staticSiteProps = {domainName: domainName, siteSubDomain: siteSubDomain};
 
-        const bucket = new Bucket(this, frontendId, staticSiteProps);
-        const viewerCertificate = new ViewerCertificate(this, frontendId, staticSiteProps);
-        const cloudFront = new CloudFront(this, frontendId, <CloudFrontProps>{
-            staticSiteProps: staticSiteProps,
-            viewerCertificate: viewerCertificate.certificate,
-            siteBucket: bucket.siteBucket,
-            cloudfrontOAI: bucket.cloudfrontOAI
+        const uconnectbrownHostedZone = route53.HostedZone.fromLookup(this, 'uconnectbrownHostedZone',
+            {domainName: domainName});
+
+        const apexSiteProps = {
+            domainName: domainName,
+            siteSubDomain: "",
+            hostedZone: uconnectbrownHostedZone
+        }
+        const wwwRedirectSiteProps = {
+            domainName: domainName,
+            siteSubDomain: "www",
+            hostedZone: uconnectbrownHostedZone
+        }
+
+        const apexBucket = new StaticSiteBucket(this, frontendId, apexSiteProps);
+        const apexViewerCertificate = new ViewerCertificate(this, frontendId, apexSiteProps);
+        const apexCloudFront = new ApexCloudFront(this, frontendId, <CloudFrontProps>{
+            staticSiteProps: apexSiteProps,
+            viewerCertificate: apexViewerCertificate.certificate,
+            siteBucket: apexBucket.siteBucket,
+            cloudfrontOAI: apexBucket.cloudfrontOAI,
         });
+
+        const wwwBucket = new RedirectBucket(this, frontendId, wwwRedirectSiteProps);
+        const wwwViewerCertificate = new ViewerCertificate(this, frontendId, wwwRedirectSiteProps);
+        const wwwCloudFront = new RedirectCloudFront(this, frontendId, <CloudFrontProps>{
+            staticSiteProps: wwwRedirectSiteProps,
+            viewerCertificate: wwwViewerCertificate.certificate,
+            siteBucket: wwwBucket.siteBucket,
+        })
     }
 }
