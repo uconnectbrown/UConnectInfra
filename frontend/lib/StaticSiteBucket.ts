@@ -7,22 +7,20 @@ import {StaticSiteProps} from "./UConnectFrontendInfraStack";
 /**
  * S3 bucket that contains the frontend static content
  */
-export class Bucket {
+export class StaticSiteBucket {
     public siteBucket: s3.IBucket;
     public cloudfrontOAI: cloudfront.OriginAccessIdentity;
 
     constructor(substack: cdk.Construct, stackName: string, props: StaticSiteProps) {
-        // TODO: uncomment this after we transfer from godaddy to route53
-        // const zone = route53.HostedZone.fromLookup(this, 'Zone', { domainName: props.domainName });
         const siteDomain = props.siteSubDomain == '' ? props.domainName : `${props.siteSubDomain}.${props.domainName}`;
-        this.cloudfrontOAI = new cloudfront.OriginAccessIdentity(substack, 'cloudfront-OAI', {
-            comment: `OAI for ${stackName}`
+        this.cloudfrontOAI = new cloudfront.OriginAccessIdentity(substack, `${siteDomain}-cloudfront-OAI`, {
+            comment: `CloudFront OAI for ${siteDomain} in stack ${stackName}`
         });
 
-        new cdk.CfnOutput(substack, `${stackName}SiteURL`, {value: 'https://' + siteDomain});
+        new cdk.CfnOutput(substack, `${siteDomain} URL`, {value: 'https://' + siteDomain});
 
         // Content bucket
-        this.siteBucket = new s3.Bucket(substack, `${stackName}-bucket`, {
+        this.siteBucket = new s3.Bucket(substack, `${stackName}-${siteDomain}-bucket`, {
             bucketName: siteDomain,
             websiteIndexDocument: 'index.html',
             // use react router to handle errors
@@ -45,6 +43,6 @@ export class Bucket {
             resources: [this.siteBucket.arnForObjects('*')],
             principals: [new iam.CanonicalUserPrincipal(this.cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)]
         }));
-        new cdk.CfnOutput(substack, `${stackName}BucketName`, {value: this.siteBucket.bucketName});
+        new cdk.CfnOutput(substack, `${siteDomain}BucketName`, {value: this.siteBucket.bucketName});
     }
 }
